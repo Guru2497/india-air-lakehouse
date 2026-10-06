@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/Guru2497/india-air-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/Guru2497/india-air-lakehouse/actions/workflows/ci.yml)
 
+**[See today's AQI for all 10 cities →](LATEST_AQI.md)** (refreshed every morning by a scheduled run)
+
 A batch lakehouse that collects hourly air pollution data for 10 Indian cities and turns it into
 **India's official National Air Quality Index (NAQI)** per city per day, using the breakpoints and
 minimum-data rules published by the Central Pollution Control Board (CPCB).
