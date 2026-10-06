@@ -75,7 +75,7 @@ def sub_index(pollutant: str, concentration: float | None) -> int | None:
 def category(aqi: int | None) -> str | None:
     if aqi is None:
         return None
-    for i_lo, i_hi, name in BANDS:
+    for _, i_hi, name in BANDS:
         if aqi <= i_hi:
             return name
     return BANDS[-1][2]
