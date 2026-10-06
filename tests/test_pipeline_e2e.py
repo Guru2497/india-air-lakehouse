@@ -74,3 +74,13 @@ def test_late_revision_updates_silver_and_gold(spark, root, sample):
     new = _gold(spark, root)[("BLR", date(2026, 9, 3))]
     assert new.pm2_5_24h > old.pm2_5_24h
     assert spark.read.format("delta").load(Paths(root).gold_daily).count() == 8  # replaced, not appended
+
+
+def test_markdown_summary_lists_each_city_worst_first(spark, root, tmp_path):
+    from airlake.pipeline import show
+
+    run(spark, fixture=SAMPLE, root=root, run_id="run-1")
+    out = tmp_path / "summary.md"
+    show(spark, root, str(out))
+    text = out.read_text(encoding="utf-8")
+    assert "| 1 | Delhi |" in text and "| 2 | Bengaluru |" in text

@@ -145,18 +145,46 @@ def rebuild(spark: SparkSession, root: str | Path | None = None, cities_file: st
         gold.build_dim_city(spark, load_cities(cities_file), paths.gold_dim_city)
 
 
-def show(spark: SparkSession, root: str | Path | None = None) -> None:
+POLLUTANT_LABELS = {"pm2_5": "PM2.5", "pm10": "PM10", "no2": "NO2", "so2": "SO2", "o3": "O3", "co": "CO"}
+
+
+def latest_aqi(spark: SparkSession, root: str | Path | None = None):
+    """Latest day with a reported AQI for each city, worst first."""
     paths = Paths.from_env(root)
     daily = spark.read.format("delta").load(paths.gold_daily).where("aqi IS NOT NULL")
     dim = spark.read.format("delta").load(paths.gold_dim_city)
     latest = daily.groupBy("city_id").agg(F.max("obs_date_ist").alias("obs_date_ist"))
-    (
+    return (
         daily.join(latest, ["city_id", "obs_date_ist"])
         .join(dim, "city_id")
         .select("name", "obs_date_ist", "aqi", "aqi_category", "prominent_pollutant", "pm2_5_24h", "pm10_24h")
-        .orderBy(F.col("aqi").desc())
-        .show(truncate=False)
+        .orderBy(F.col("aqi").desc(), "name")
     )
+
+
+def to_markdown(rows) -> str:
+    lines = [
+        "## Latest National AQI by city",
+        "",
+        "| # | City | Date (IST) | AQI | Category | Main pollutant | PM2.5 24h (µg/m³) | PM10 24h (µg/m³) |",
+        "| --: | --- | --- | --: | --- | --- | --: | --: |",
+    ]
+    for i, r in enumerate(rows, 1):
+        lines.append(
+            f"| {i} | {r.name} | {r.obs_date_ist} | **{r.aqi}** | {r.aqi_category} | "
+            f"{POLLUTANT_LABELS.get(r.prominent_pollutant, r.prominent_pollutant)} | {r.pm2_5_24h} | {r.pm10_24h} |"
+        )
+    lines += ["", "AQI follows CPCB's National AQI method on modelled CAMS data (via Open-Meteo), "
+              "not CPCB ground-station readings."]
+    return "\n".join(lines) + "\n"
+
+
+def show(spark: SparkSession, root: str | Path | None = None, markdown_out: str | None = None) -> None:
+    df = latest_aqi(spark, root)
+    df.show(truncate=False)
+    if markdown_out:
+        with open(markdown_out, "a", encoding="utf-8") as fh:
+            fh.write(to_markdown(df.collect()))
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -171,7 +199,8 @@ def main(argv: list[str] | None = None) -> None:
     r.add_argument("--end", type=date.fromisoformat)
     r.add_argument("--fixture", type=Path, help="load a saved API response instead of calling the API")
     sub.add_parser("rebuild", help="replay bronze into silver and gold")
-    sub.add_parser("show", help="print the latest AQI per city")
+    sh = sub.add_parser("show", help="print the latest AQI per city")
+    sh.add_argument("--markdown", help="also append a markdown table to this file (e.g. $GITHUB_STEP_SUMMARY)")
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)-7s %(name)s: %(message)s")
@@ -183,7 +212,7 @@ def main(argv: list[str] | None = None) -> None:
     elif args.command == "rebuild":
         rebuild(spark, args.root, args.cities)
     else:
-        show(spark, args.root)
+        show(spark, args.root, args.markdown)
 
 
 if __name__ == "__main__":

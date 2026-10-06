@@ -44,4 +44,4 @@ jobs:
         run: |
           airlake --root /tmp/live run --mode backfill --start "$(date -u -d '3 days ago' +%F)" --end "$(date -u +%F)"
           airlake --root /tmp/live run
-          airlake --root /tmp/live show
+          airlake --root /tmp/live show --markdown "$GITHUB_STEP_SUMMARY"
