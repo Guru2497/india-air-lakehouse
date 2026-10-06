@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      live:
+        description: "Also run one real incremental load against the Open-Meteo API"
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Cache Delta Lake jars
+        uses: actions/cache@v4
+        with:
+          path: ~/.ivy2
+          key: ivy-delta-3.2.1-spark-3.5.3
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Unit and integration tests
+        run: pytest -v
+      - name: Offline demo run
+        run: |
+          airlake --root /tmp/lakehouse run --fixture tests/fixtures/sample_response.json
+          airlake --root /tmp/lakehouse show
+      - name: Live run against the real API
+        if: github.event_name == 'workflow_dispatch' && inputs.live
+        run: |
+          airlake --root /tmp/live run --mode backfill --start "$(date -u -d '3 days ago' +%F)" --end "$(date -u +%F)"
+          airlake --root /tmp/live run
+          airlake --root /tmp/live show

@@ -1,0 +1,13 @@
+# Cities tracked by the pipeline. city_id is the stable business key used in every table.
+# Coordinates are city centres; the API returns a modelled value for the nearest grid cell.
+cities:
+  - { city_id: BLR, name: Bengaluru, state: Karnataka, latitude: 12.9716, longitude: 77.5946 }
+  - { city_id: DEL, name: Delhi, state: Delhi, latitude: 28.6139, longitude: 77.2090 }
+  - { city_id: BOM, name: Mumbai, state: Maharashtra, latitude: 19.0760, longitude: 72.8777 }
+  - { city_id: MAA, name: Chennai, state: Tamil Nadu, latitude: 13.0827, longitude: 80.2707 }
+  - { city_id: CCU, name: Kolkata, state: West Bengal, latitude: 22.5726, longitude: 88.3639 }
+  - { city_id: HYD, name: Hyderabad, state: Telangana, latitude: 17.3850, longitude: 78.4867 }
+  - { city_id: PNQ, name: Pune, state: Maharashtra, latitude: 18.5204, longitude: 73.8567 }
+  - { city_id: AMD, name: Ahmedabad, state: Gujarat, latitude: 23.0225, longitude: 72.5714 }
+  - { city_id: LKO, name: Lucknow, state: Uttar Pradesh, latitude: 26.8467, longitude: 80.9462 }
+  - { city_id: JAI, name: Jaipur, state: Rajasthan, latitude: 26.9124, longitude: 75.7873 }
