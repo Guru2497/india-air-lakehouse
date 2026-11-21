@@ -2,19 +2,19 @@
 
 # Latest air quality in 10 Indian cities
 
-Updated 20 Nov 2026, 14:41 IST by the daily pipeline run.
+Updated 21 Nov 2026, 14:16 IST by the daily pipeline run.
 
 | # | City | Date (IST) | AQI | Category | Main pollutant | PM2.5 24h (µg/m³) | PM10 24h (µg/m³) |
 | --: | --- | --- | --: | --- | --- | --: | --: |
-| 1 | Lucknow | 2026-11-19 | **294** | Poor | PM2.5 | 118.29 | 126.2 |
-| 2 | Mumbai | 2026-11-19 | **228** | Poor | O3 | 61.25 | 67.15 |
-| 3 | Delhi | 2026-11-19 | **221** | Poor | PM2.5 | 96.98 | 98.03 |
-| 4 | Bengaluru | 2026-11-19 | **196** | Moderate | O3 | 53.85 | 57.48 |
-| 5 | Chennai | 2026-11-19 | **195** | Moderate | O3 | 69.87 | 77.26 |
-| 6 | Hyderabad | 2026-11-19 | **176** | Moderate | O3 | 53.31 | 57.4 |
-| 7 | Jaipur | 2026-11-19 | **147** | Moderate | O3 | 55.2 | 58.45 |
-| 8 | Pune | 2026-11-19 | **146** | Moderate | O3 | 48.57 | 53.66 |
-| 9 | Ahmedabad | 2026-11-19 | **141** | Moderate | O3 | 48.38 | 53.92 |
-| 10 | Kolkata | 2026-11-19 | **119** | Moderate | PM2.5 | 66.34 | 69.11 |
+| 1 | Delhi | 2026-11-20 | **321** | Very Poor | PM2.5 | 147.54 | 148.34 |
+| 2 | Mumbai | 2026-11-20 | **302** | Very Poor | O3 | 60.38 | 64.27 |
+| 3 | Chennai | 2026-11-20 | **275** | Poor | O3 | 58.0 | 62.48 |
+| 4 | Lucknow | 2026-11-20 | **229** | Poor | PM2.5 | 99.34 | 104.18 |
+| 5 | Bengaluru | 2026-11-20 | **198** | Moderate | O3 | 46.51 | 48.03 |
+| 6 | Jaipur | 2026-11-20 | **184** | Moderate | O3 | 62.73 | 64.29 |
+| 7 | Ahmedabad | 2026-11-20 | **161** | Moderate | O3 | 45.39 | 47.4 |
+| 8 | Pune | 2026-11-20 | **153** | Moderate | O3 | 46.42 | 49.61 |
+| 9 | Hyderabad | 2026-11-20 | **151** | Moderate | O3 | 43.04 | 44.83 |
+| 10 | Kolkata | 2026-11-20 | **44** | Good | O3 | 12.66 | 12.8 |
 
 AQI follows CPCB's National AQI method on modelled CAMS data (via Open-Meteo), not CPCB ground-station readings.
